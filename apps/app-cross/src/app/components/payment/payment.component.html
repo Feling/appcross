@@ -14,12 +14,12 @@
   </mat-card-content>
   <mat-card-content  *ngIf=!pickCurr>
     <p>
-      What are you from?
+      Where are you from?
     </p>
     <form action=''>
       <mat-form-field>
         <mat-label>Country</mat-label>
-        <mat-select [(ngModel)]="selectedValue" name="food">
+        <mat-select [(ngModel)]="selectedValue" name="food"  (selectionChange)="selectedCountryChange($event.value)">
           <mat-option *ngFor="let country of countries" [value]="country.value">
             {{country.viewValue}}
           </mat-option>

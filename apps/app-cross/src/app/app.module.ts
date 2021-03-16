@@ -9,12 +9,14 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import {MatSelectModule} from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
+import { AppRoutingModule } from './app-routing.module';
+import { ContainerComponent } from './components/container/container.component';
 
 @NgModule({
-  declarations: [AppComponent, PaymentComponent],
+  declarations: [AppComponent, PaymentComponent, ContainerComponent],
   imports: [
     BrowserModule,
-    RouterModule.forRoot([], { initialNavigation: 'enabled' }),
+    AppRoutingModule,
     BrowserAnimationsModule,
     MatCardModule,
     MatButtonModule,
