@@ -1,19 +1,30 @@
+
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Shiba Inu</mat-card-title>
+    <mat-card-title style='padding: 12px;'>Please select:</mat-card-title>
   </mat-card-header>
   <mat-card-content  *ngIf=pickCurr>
     <p>
       What currency you want to pay?
     </p>
+    <div class='buttons'>
     <button mat-button (click)='pickCurrency("local")'>Local</button>
     <button mat-button (click)='pickCurrency("USD")'>USD</button>
+    </div>
   </mat-card-content>
   <mat-card-content  *ngIf=!pickCurr>
     <p>
       What are you from?
     </p>
-    <button mat-button (click)='pickCurrency("local")'>Local</button>
-    <button mat-button (click)='pickCurrency("USD")'>USD</button>
+    <form action=''>
+      <mat-form-field>
+        <mat-label>Favorite food</mat-label>
+        <mat-select [(ngModel)]="selectedValue" name="food">
+          <mat-option *ngFor="let country of countries" [value]="country.value">
+            {{country.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
   </mat-card-content>
 </mat-card>

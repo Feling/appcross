@@ -8,6 +8,13 @@ import { Component } from '@angular/core';
 })
 export class PaymentComponent {
   pickCurr = true;
+  selectedValue: string;
+
+  countries = [
+    {value: 'France', viewValue: 'France', currency: 'ERU'},
+    {value: 'Moldova', viewValue: 'Moldova', currency: 'ERU'},
+    {value: 'Israel', viewValue: 'Israel', currency: 'ERU'}
+  ]
   constructor() {
   }
 

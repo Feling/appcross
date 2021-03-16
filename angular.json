@@ -71,7 +71,7 @@
               "apps/app-cross/src/favicon.ico",
               "apps/app-cross/src/assets"
             ],
-            "styles": ["./node_modules/@angular/material/prebuilt-themes/purple-green.css", "apps/app-cross/src/styles.scss"],
+            "styles": ["./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css", "apps/app-cross/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
