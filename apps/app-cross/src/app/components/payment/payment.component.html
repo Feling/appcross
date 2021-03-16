@@ -18,7 +18,7 @@
     </p>
     <form action=''>
       <mat-form-field>
-        <mat-label>Favorite food</mat-label>
+        <mat-label>Country</mat-label>
         <mat-select [(ngModel)]="selectedValue" name="food">
           <mat-option *ngFor="let country of countries" [value]="country.value">
             {{country.viewValue}}
