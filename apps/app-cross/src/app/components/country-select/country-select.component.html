@@ -1,0 +1,19 @@
+<p>Where are you from?</p>
+<form class=country-selections action=''>
+  <mat-form-field>
+    <mat-label>Country</mat-label>
+    <mat-select [(ngModel)]='selectedValue' name='food' (selectionChange)='selectedCountryChange($event.value)'>
+      <mat-option *ngFor='let country of countries' [value]='country.value'>
+        {{country.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field *ngIf='isSelectBank'>
+    <mat-label>Bank name</mat-label>
+    <mat-select [(ngModel)]='selectedValue' name='food' (selectionChange)='selectedBankChange($event.value)'>
+      <mat-option *ngFor='let bank of banks' [value]='bank.value'>
+        {{bank.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>

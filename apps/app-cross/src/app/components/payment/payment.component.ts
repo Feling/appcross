@@ -10,13 +10,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class PaymentComponent implements OnInit {
   pickCurr = true;
-  selectedValue: string;
   merchData;
-  countries = [
-    { value: 'France', viewValue: 'France', currency: 'ERU' },
-    { value: 'Moldova', viewValue: 'Moldova', currency: 'ERU' },
-    { value: 'Israel', viewValue: 'Israel', currency: 'ERU' }
-  ];
+  isBankSelected  = false;
+  isCurrencySelect = false;
 
   constructor(private paymentService: PaymentService,
               private activatedroute: ActivatedRoute,
@@ -29,17 +25,18 @@ export class PaymentComponent implements OnInit {
         console.log(data);
         this.merchData = data;
         this.paymentService.setSettlement('bank', data['bank']);
+        this.paymentService.setProperty('creditorName', data['creditorName'])
+        this.paymentService.setProperty('amount', data['amount'])
+        this.paymentService.setProperty('remittanceInformationUnstructured', data['remittanceInformationUnstructured'])
       }
     );
   }
-
-  pickCurrency(type: string) {
-    this.paymentService.setProperty('currency', type);
-    this.pickCurr = !this.pickCurr;
+  bankSelected(bool) {
+    this.isBankSelected = bool;
+    this.isCurrencySelect = true
   }
 
-  selectedCountryChange(value) {
-    this.paymentService.setProperty('country', value);
-    this.paymentService.getCorrespondent();
+  currencySelected(event) {
+    this.paymentService.preprareJSON();
   }
 }
