@@ -9,6 +9,6 @@ export class ContainerComponent {
   constructor() {
   }
 
-  title = 'Cross Border Payments!';
+  title = 'BB bistro rapid Pay';
 
 }
