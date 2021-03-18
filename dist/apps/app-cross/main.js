@@ -27,7 +27,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bankNameToIBAN", function() { return bankNameToIBAN; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BankRates", function() { return BankRates; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PaymentService", function() { return PaymentService; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "8Y7J");
+/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! uuid */ "4USb");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "8Y7J");
+
 
 const BankMap = {
     CITIUS33: {
@@ -118,7 +120,7 @@ class PaymentService {
         if (this.paymentObj.currency === 'EUR') {
             jsonSaltEdge.creditorName = this.paymentObj.creditorName;
             jsonSaltEdge.instructedAmount.currency = this.paymentObj.currency;
-            jsonSaltEdge.endToEndIdentification = 'cc5a8022-5e71-460e-82fa-ab0be1997a54';
+            jsonSaltEdge.endToEndIdentification = Object(uuid__WEBPACK_IMPORTED_MODULE_0__["v4"])();
             jsonSaltEdge.remittanceInformationUnstructured = this.paymentObj.remittanceInformationUnstructured;
             jsonSaltEdge.creditorAccount.iban = bankNameToIBAN[BankMap[this.paymentObj.settlementInstructions.bank].currency[this.paymentObj.currency]];
             jsonSaltEdge.creditorAccount.bic = bankNameToBIC[BankMap[this.paymentObj.settlementInstructions.bank].currency[this.paymentObj.currency]];
@@ -128,7 +130,7 @@ class PaymentService {
             jsonSaltEdge.creditorName = this.paymentObj.creditorName;
             jsonSaltEdge.instructedAmount.amount = this.paymentObj.amount;
             jsonSaltEdge.instructedAmount.currency = 'EUR';
-            jsonSaltEdge.endToEndIdentification = 'cc5a8022-5e71-460e-82fa-ab0be1997a54';
+            jsonSaltEdge.endToEndIdentification = Object(uuid__WEBPACK_IMPORTED_MODULE_0__["v4"])();
             jsonSaltEdge.remittanceInformationUnstructured = this.paymentObj.remittanceInformationUnstructured;
             jsonSaltEdge.creditorAccount.iban = bankNameToIBAN[this.paymentObj.bank];
             jsonSaltEdge.creditorAccount.bic = bankNameToBIC[this.paymentObj.bank];
@@ -140,9 +142,15 @@ class PaymentService {
     getPaymentData() {
         return this.paymentJson;
     }
+    calculateLocalAndUsd() {
+        return {
+            EUR: (Number(BankRates[BankMap[this.paymentObj.settlementInstructions.bank].currency['EUR']]) * Number(this.paymentObj.amount)).toString(),
+            USD: (Number(BankRates[this.paymentObj.bank]) * Number(this.paymentObj.amount)).toString()
+        };
+    }
 }
 PaymentService.ɵfac = function PaymentService_Factory(t) { return new (t || PaymentService)(); };
-PaymentService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: PaymentService, factory: PaymentService.ɵfac, providedIn: 'root' });
+PaymentService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjectable"]({ token: PaymentService, factory: PaymentService.ɵfac, providedIn: 'root' });
 
 
 /***/ }),
@@ -435,7 +443,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CurrencySelectComponent", function() { return CurrencySelectComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "8Y7J");
 /* harmony import */ var _services_payment_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/payment.service */ "1RMo");
-/* harmony import */ var _angular_material_button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material/button */ "Dxy4");
+/* harmony import */ var _angular_material_grid_list__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material/grid-list */ "40+f");
+/* harmony import */ var _angular_material_button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material/button */ "Dxy4");
+
 
 
 
@@ -450,25 +460,39 @@ class CurrencySelectComponent {
         this.paymentService.setCurrency(type);
         this.currencySelected.emit(true);
     }
+    ngOnInit() {
+        this.amountPerCurr = this.paymentService.calculateLocalAndUsd();
+    }
 }
 CurrencySelectComponent.ɵfac = function CurrencySelectComponent_Factory(t) { return new (t || CurrencySelectComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_payment_service__WEBPACK_IMPORTED_MODULE_1__["PaymentService"])); };
-CurrencySelectComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: CurrencySelectComponent, selectors: [["app-currency-select"]], outputs: { currencySelected: "currencySelected" }, decls: 8, vars: 0, consts: [[1, "buttons"], ["mat-flat-button", "", 3, "click"]], template: function CurrencySelectComponent_Template(rf, ctx) { if (rf & 1) {
+CurrencySelectComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: CurrencySelectComponent, selectors: [["app-currency-select"]], outputs: { currencySelected: "currencySelected" }, decls: 11, vars: 2, consts: [[1, "title-currency"], [1, "excenge-rates"], ["cols", "1", "rowHeight", "40px"], ["mat-stroked-button", "", "color", "primary", 1, "custom-button", 3, "click"]], template: function CurrencySelectComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "p");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, " What currency you want to pay? ");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, "What currency you want to pay?");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "div", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "button", 1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function CurrencySelectComponent_Template_button_click_4_listener() { return ctx.pickCurrency("local"); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](5, "EUR");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](6, "button", 1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function CurrencySelectComponent_Template_button_click_6_listener() { return ctx.pickCurrency("USD"); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](7, "USD");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "div", 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "mat-grid-list", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "mat-grid-tile");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](6, "button", 3);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function CurrencySelectComponent_Template_button_click_6_listener() { return ctx.pickCurrency("local"); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](7);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](8, "mat-grid-tile");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](9, "button", 3);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function CurrencySelectComponent_Template_button_click_9_listener() { return ctx.pickCurrency("USD"); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](10);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    } }, directives: [_angular_material_button__WEBPACK_IMPORTED_MODULE_2__["MatButton"]], styles: [".buttons[_ngcontent-%COMP%] {\n  padding: 25px;\n  display: flex;\n  flex-direction: column;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXC4uXFxjdXJyZW5jeS1zZWxlY3QuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxhQUFBO0VBQ0EsYUFBQTtFQUNBLHNCQUFBO0FBQ0YiLCJmaWxlIjoiY3VycmVuY3ktc2VsZWN0LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmJ1dHRvbnMge1xyXG4gIHBhZGRpbmc6IDI1cHg7XHJcbiAgZGlzcGxheTogZmxleDtcclxuICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xyXG59XHJcbiJdfQ== */"] });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+    } if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](7);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"]("EUR: ", ctx.amountPerCurr.EUR, "EUR ");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](3);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"]("USD: ", ctx.amountPerCurr.USD, "EUR ");
+    } }, directives: [_angular_material_grid_list__WEBPACK_IMPORTED_MODULE_2__["MatGridList"], _angular_material_grid_list__WEBPACK_IMPORTED_MODULE_2__["MatGridTile"], _angular_material_button__WEBPACK_IMPORTED_MODULE_3__["MatButton"]], styles: [".buttons[_ngcontent-%COMP%] {\n  padding: 25px;\n  display: flex;\n  flex-direction: column;\n}\n\n.custom-button[_ngcontent-%COMP%] {\n  width: 222px !important;\n  min-width: unset !important;\n}\n\n.excenge-rates[_ngcontent-%COMP%] {\n  padding-top: 22px;\n}\n\n.title-currency[_ngcontent-%COMP%] {\n  padding-top: 13px;\n  text-align: center;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXC4uXFxjdXJyZW5jeS1zZWxlY3QuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxhQUFBO0VBQ0EsYUFBQTtFQUNBLHNCQUFBO0FBQ0Y7O0FBRUE7RUFDRSx1QkFBQTtFQUNBLDJCQUFBO0FBQ0Y7O0FBR0E7RUFDRSxpQkFBQTtBQUFGOztBQUdBO0VBQ0UsaUJBQUE7RUFDQSxrQkFBQTtBQUFGIiwiZmlsZSI6ImN1cnJlbmN5LXNlbGVjdC5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5idXR0b25zIHtcclxuICBwYWRkaW5nOiAyNXB4O1xyXG4gIGRpc3BsYXk6IGZsZXg7XHJcbiAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcclxufVxyXG5cclxuLmN1c3RvbS1idXR0b24ge1xyXG4gIHdpZHRoOiAyMjJweCFpbXBvcnRhbnQ7XHJcbiAgbWluLXdpZHRoOiB1bnNldCFpbXBvcnRhbnQ7XHJcbn1cclxuXHJcblxyXG4uZXhjZW5nZS1yYXRlcyB7XHJcbiAgcGFkZGluZy10b3A6IDIycHg7XHJcbn1cclxuXHJcbi50aXRsZS1jdXJyZW5jeSB7XHJcbiAgcGFkZGluZy10b3A6IDEzcHg7XHJcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xyXG59XHJcbiJdfQ== */"] });
 
 
 /***/ }),

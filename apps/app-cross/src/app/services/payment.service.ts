@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { v4 as uuidv4 } from 'uuid';
+
 
 export interface PaymentObj {
   currency: string,
@@ -134,7 +136,7 @@ export class PaymentService {
     if ( this.paymentObj.currency === 'EUR') {
       jsonSaltEdge.creditorName = this.paymentObj.creditorName;
       jsonSaltEdge.instructedAmount.currency = this.paymentObj.currency;
-      jsonSaltEdge.endToEndIdentification = 'cc5a8022-5e71-460e-82fa-ab0be1997a54';
+      jsonSaltEdge.endToEndIdentification = uuidv4();
       jsonSaltEdge.remittanceInformationUnstructured = this.paymentObj.remittanceInformationUnstructured;
       jsonSaltEdge.creditorAccount.iban = bankNameToIBAN[BankMap[this.paymentObj.settlementInstructions.bank].currency[this.paymentObj.currency]];
       jsonSaltEdge.creditorAccount.bic = bankNameToBIC[BankMap[this.paymentObj.settlementInstructions.bank].currency[this.paymentObj.currency]];
@@ -146,7 +148,7 @@ export class PaymentService {
       jsonSaltEdge.creditorName = this.paymentObj.creditorName;
       jsonSaltEdge.instructedAmount.amount = this.paymentObj.amount;
       jsonSaltEdge.instructedAmount.currency = 'EUR';
-      jsonSaltEdge.endToEndIdentification = 'cc5a8022-5e71-460e-82fa-ab0be1997a54';
+      jsonSaltEdge.endToEndIdentification = uuidv4();
       jsonSaltEdge.remittanceInformationUnstructured = this.paymentObj.remittanceInformationUnstructured;
       jsonSaltEdge.creditorAccount.iban = bankNameToIBAN[this.paymentObj.bank];
       jsonSaltEdge.creditorAccount.bic = bankNameToBIC[this.paymentObj.bank];
@@ -159,5 +161,12 @@ export class PaymentService {
 
   getPaymentData() {
     return this.paymentJson;
+  }
+
+  calculateLocalAndUsd() {
+    return {
+      EUR:  (Number(BankRates[BankMap[this.paymentObj.settlementInstructions.bank].currency['EUR']]) * Number(this.paymentObj.amount)).toString(),
+      USD: (Number(BankRates[this.paymentObj.bank]) * Number(this.paymentObj.amount)).toString()
+    }
   }
 }

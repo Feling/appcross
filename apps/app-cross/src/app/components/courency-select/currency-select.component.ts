@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { PaymentService } from '../../services/payment.service';
 
 
@@ -7,9 +7,11 @@ import { PaymentService } from '../../services/payment.service';
   styleUrls: ['./currency-select.component.scss'],
   templateUrl: './currency-select.component.html'
 })
-export class CurrencySelectComponent {
+export class CurrencySelectComponent implements OnInit{
 
   @Output() currencySelected: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  amountPerCurr;
 
   constructor(private paymentService: PaymentService) {
   }
@@ -17,5 +19,9 @@ export class CurrencySelectComponent {
   pickCurrency(type: string) {
     this.paymentService.setCurrency(type);
     this.currencySelected.emit(true);
+  }
+
+  ngOnInit(): void {
+    this.amountPerCurr = this.paymentService.calculateLocalAndUsd();
   }
 }

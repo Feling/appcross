@@ -1,9 +1,15 @@
-  <div>
-    <p>
-      What currency you want to pay?
-    </p>
-    <div class='buttons'>
-      <button mat-flat-button (click)='pickCurrency("local")'>EUR</button>
-      <button mat-flat-button (click)='pickCurrency("USD")'>USD</button>
-    </div>
+<div>
+  <div class='title-currency'>What currency you want to pay?</div>
+  <div class='excenge-rates'>
+    <mat-grid-list cols='1' rowHeight='40px'>
+      <mat-grid-tile>
+        <button mat-stroked-button color='primary' class='custom-button' (click)='pickCurrency("local")'>EUR:   {{amountPerCurr.EUR}}EUR
+        </button>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <button mat-stroked-button color='primary' class='custom-button' (click)='pickCurrency("USD")'>USD:  {{amountPerCurr.USD}}EUR
+        </button>
+      </mat-grid-tile>
+    </mat-grid-list>
   </div>
+</div>
