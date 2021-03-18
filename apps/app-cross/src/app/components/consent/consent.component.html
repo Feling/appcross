@@ -6,14 +6,14 @@
       These are the details that we will share with Salt Edge Pay:</h3>
   </div>
   <div class='payment-data'>
-    <mat-grid-list cols='2' rowHeight='40px'>
+    <mat-grid-list cols='4' rowHeight='40px'>
       <mat-grid-tile
         [colspan]='1'
         [rowspan]='1'
       >Payee
       </mat-grid-tile>
       <mat-grid-tile
-        [colspan]='1'
+        [colspan]='3'
         [rowspan]='1'
       >{{paymentData.creditorAccount.bic}}</mat-grid-tile>
       <mat-grid-tile
@@ -22,7 +22,7 @@
       >IBAN
       </mat-grid-tile>
       <mat-grid-tile
-        [colspan]='1'
+        [colspan]='3'
         [rowspan]='1'
       >{{paymentData.creditorAccount.iban}}</mat-grid-tile>
       <mat-grid-tile
@@ -31,7 +31,7 @@
       >Reference
       </mat-grid-tile>
       <mat-grid-tile
-        [colspan]='1'
+        [colspan]='3'
         [rowspan]='1'
       >{{paymentData.creditorAccount.bic}}</mat-grid-tile>
       <mat-grid-tile
@@ -40,13 +40,13 @@
       >Amount
       </mat-grid-tile>
       <mat-grid-tile
-        [colspan]='1'
+        [colspan]='3'
         [rowspan]='1'
       >{{paymentData.instructedAmount.amount}} EUR</mat-grid-tile>
     </mat-grid-list>
   </div>
   <div class='buttons'>
-    <button mat-stroked-button color='primary' class='custom-button'>Cancel</button>
+    <button mat-stroked-button color='primary' class='custom-button' (click)='cancelButton()'>Cancel</button>
     <button mat-stroked-button color='primary' class='custom-button'>Confirm</button>
   </div>
 </div>

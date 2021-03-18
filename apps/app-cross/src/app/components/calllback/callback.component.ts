@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 export interface ResponseFromServer {
   endToEndIdentification: string,
   message: string,
-  status: 1
+  status: string
 }
 
 @Component({
@@ -14,7 +14,10 @@ export interface ResponseFromServer {
 })
 export class CallbackComponent implements OnInit {
 
+  message;
   responseFromServer: ResponseFromServer;
+  title = 'BB Bistro Rapid Pay';
+
   constructor(private activatedroute: ActivatedRoute) {
   }
 
@@ -22,6 +25,9 @@ export class CallbackComponent implements OnInit {
     this.activatedroute.queryParams.subscribe(
       (data: ResponseFromServer) => {
         this.responseFromServer = data
+        if (data.status === '1') {
+          this.message = 'Thank you, your order have been successfully paid.'
+        }
         console.log(data);
       }
     );
