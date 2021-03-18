@@ -14,7 +14,6 @@ export class ConsentComponent implements OnInit{
   constructor(private paymentService: PaymentService) {
   }
 
-
   ngOnInit(): void {
     this.paymentData = this.paymentService.getPaymentData();
   }
