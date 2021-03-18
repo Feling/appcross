@@ -28,7 +28,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BankRates", function() { return BankRates; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PaymentService", function() { return PaymentService; });
 /* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! uuid */ "4USb");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "8Y7J");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "IheW");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "iInd");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "8Y7J");
+
+
+
+
 
 
 const BankMap = {
@@ -63,7 +69,9 @@ const BankRates = {
     AGRIFRPP: 0.8554
 };
 class PaymentService {
-    constructor() {
+    constructor(httpClient, router) {
+        this.httpClient = httpClient;
+        this.router = router;
         this.paymentObj = {
             settlementInstructions: {
                 bank: '',
@@ -76,6 +84,14 @@ class PaymentService {
             amount: '',
             creditorName: '',
             remittanceInformationUnstructured: ''
+        };
+        this.createQueryString = (data) => {
+            return Object.keys(data).map(key => {
+                let val = data[key];
+                if (val !== null && typeof val === 'object')
+                    val = this.createQueryString(val);
+                return `${key}=${encodeURIComponent(`${val}`.replace(/\s/g, '_'))}`;
+            }).join('&');
         };
     }
     setProperty(prop, value) {
@@ -151,9 +167,19 @@ class PaymentService {
     flushData() {
         this.paymentJson = {};
     }
+    createQueryParams() {
+        let obj = { creditor_name: this.paymentJson.creditorName,
+            instructed_amount: this.paymentJson.instructedAmount.amount,
+            instructed_currency: this.paymentJson.instructedAmount.currency,
+            remittance_information_unstructured: this.paymentJson.remittanceInformationUnstructured,
+            end_to_end_identification: this.paymentJson.endToEndIdentification,
+            creditor_account_iban: this.paymentJson.creditorAccount.iban };
+        let query = this.createQueryString(obj);
+        window.location.href = `https://finastra-hkt.herokuapp.com/?${query}`;
+    }
 }
-PaymentService.ɵfac = function PaymentService_Factory(t) { return new (t || PaymentService)(); };
-PaymentService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjectable"]({ token: PaymentService, factory: PaymentService.ɵfac, providedIn: 'root' });
+PaymentService.ɵfac = function PaymentService_Factory(t) { return new (t || PaymentService)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"])); };
+PaymentService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjectable"]({ token: PaymentService, factory: PaymentService.ɵfac, providedIn: 'root' });
 
 
 /***/ }),
@@ -356,9 +382,12 @@ class ConsentComponent {
         this.paymentService.flushData();
         this.buttonClicked.emit('cancel');
     }
+    submitButton() {
+        this.paymentService.createQueryParams();
+    }
 }
 ConsentComponent.ɵfac = function ConsentComponent_Factory(t) { return new (t || ConsentComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_payment_service__WEBPACK_IMPORTED_MODULE_1__["PaymentService"])); };
-ConsentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: ConsentComponent, selectors: [["app-consent"]], outputs: { buttonClicked: "buttonClicked" }, decls: 31, vars: 20, consts: [[1, "container"], [1, "title"], [1, "main"], [1, "payment-data"], ["cols", "4", "rowHeight", "40px"], [3, "colspan", "rowspan"], [1, "buttons"], ["mat-stroked-button", "", "color", "primary", 1, "custom-button", 3, "click"], ["mat-stroked-button", "", "color", "primary", 1, "custom-button"]], template: function ConsentComponent_Template(rf, ctx) { if (rf & 1) {
+ConsentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: ConsentComponent, selectors: [["app-consent"]], outputs: { buttonClicked: "buttonClicked" }, decls: 31, vars: 20, consts: [[1, "container"], [1, "title"], [1, "main"], [1, "payment-data"], ["cols", "4", "rowHeight", "40px"], [3, "colspan", "rowspan"], [1, "buttons"], ["mat-stroked-button", "", "color", "primary", 1, "custom-button", 3, "click"]], template: function ConsentComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, "Consent");
@@ -404,7 +433,8 @@ ConsentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineC
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function ConsentComponent_Template_button_click_27_listener() { return ctx.cancelButton(); });
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](28, "Cancel");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](29, "button", 8);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](29, "button", 7);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function ConsentComponent_Template_button_click_29_listener() { return ctx.submitButton(); });
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](30, "Confirm");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
@@ -757,7 +787,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_consent_consent_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/consent/consent.component */ "HAPT");
 /* harmony import */ var _angular_material_grid_list__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/material/grid-list */ "40+f");
 /* harmony import */ var _components_calllback_callback_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/calllback/callback.component */ "wvW7");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/core */ "8Y7J");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/common/http */ "IheW");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/core */ "8Y7J");
+
 
 
 
@@ -777,10 +809,11 @@ __webpack_require__.r(__webpack_exports__);
 class AppModule {
 }
 AppModule.ɵfac = function AppModule_Factory(t) { return new (t || AppModule)(); };
-AppModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵdefineNgModule"]({ type: AppModule, bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_1__["AppComponent"]] });
-AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵdefineInjector"]({ providers: [], imports: [[
+AppModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_16__["ɵɵdefineNgModule"]({ type: AppModule, bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_1__["AppComponent"]] });
+AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_16__["ɵɵdefineInjector"]({ providers: [], imports: [[
             _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
             _app_routing_module__WEBPACK_IMPORTED_MODULE_8__["AppRoutingModule"],
+            _angular_common_http__WEBPACK_IMPORTED_MODULE_15__["HttpClientModule"],
             _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_3__["BrowserAnimationsModule"],
             _angular_material_card__WEBPACK_IMPORTED_MODULE_4__["MatCardModule"],
             _angular_material_button__WEBPACK_IMPORTED_MODULE_5__["MatButtonModule"],
@@ -788,11 +821,12 @@ AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵdefineInjecto
             _angular_forms__WEBPACK_IMPORTED_MODULE_7__["FormsModule"],
             _angular_material_grid_list__WEBPACK_IMPORTED_MODULE_13__["MatGridListModule"]
         ]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_15__["ɵɵsetNgModuleScope"](AppModule, { declarations: [_app_component__WEBPACK_IMPORTED_MODULE_1__["AppComponent"], _components_payment_payment_component__WEBPACK_IMPORTED_MODULE_2__["PaymentComponent"], _components_container_container_component__WEBPACK_IMPORTED_MODULE_9__["ContainerComponent"], _components_country_select_country_select_component__WEBPACK_IMPORTED_MODULE_10__["CountrySelectComponent"],
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_16__["ɵɵsetNgModuleScope"](AppModule, { declarations: [_app_component__WEBPACK_IMPORTED_MODULE_1__["AppComponent"], _components_payment_payment_component__WEBPACK_IMPORTED_MODULE_2__["PaymentComponent"], _components_container_container_component__WEBPACK_IMPORTED_MODULE_9__["ContainerComponent"], _components_country_select_country_select_component__WEBPACK_IMPORTED_MODULE_10__["CountrySelectComponent"],
         _components_courency_select_currency_select_component__WEBPACK_IMPORTED_MODULE_11__["CurrencySelectComponent"],
         _components_consent_consent_component__WEBPACK_IMPORTED_MODULE_12__["ConsentComponent"],
         _components_calllback_callback_component__WEBPACK_IMPORTED_MODULE_14__["CallbackComponent"]], imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
         _app_routing_module__WEBPACK_IMPORTED_MODULE_8__["AppRoutingModule"],
+        _angular_common_http__WEBPACK_IMPORTED_MODULE_15__["HttpClientModule"],
         _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_3__["BrowserAnimationsModule"],
         _angular_material_card__WEBPACK_IMPORTED_MODULE_4__["MatCardModule"],
         _angular_material_button__WEBPACK_IMPORTED_MODULE_5__["MatButtonModule"],

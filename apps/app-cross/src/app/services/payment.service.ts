@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 
 export interface PaymentObj {
@@ -84,9 +86,9 @@ export class PaymentService {
     remittanceInformationUnstructured: ''
   };
 
-  paymentJson;
+  paymentJson: PaymentSaltEdgeObj;
 
-  constructor() {
+  constructor(protected httpClient: HttpClient, private router: Router) {
   }
 
   setProperty(prop, value) {
@@ -171,6 +173,25 @@ export class PaymentService {
   }
 
   flushData() {
-    this.paymentJson = {};
+    this.paymentJson = {} as any;
+  }
+
+  createQueryParams() {
+   let  obj = {creditor_name: this.paymentJson.creditorName,
+    instructed_amount: this.paymentJson.instructedAmount.amount,
+    instructed_currency: this.paymentJson.instructedAmount.currency,
+    remittance_information_unstructured: this.paymentJson.remittanceInformationUnstructured,
+    end_to_end_identification: this.paymentJson.endToEndIdentification,
+    creditor_account_iban: this.paymentJson.creditorAccount.iban}
+    let query = this.createQueryString(obj);
+    window.location.href = `https://finastra-hkt.herokuapp.com/?${query}`;
+  }
+  createQueryString = (data) => {
+
+    return Object.keys(data).map(key => {
+      let val = data[key]
+      if (val !== null && typeof val === 'object') val = this.createQueryString(val)
+      return `${key}=${encodeURIComponent(`${val}`.replace(/\s/g, '_'))}`
+    }).join('&')
   }
 }
