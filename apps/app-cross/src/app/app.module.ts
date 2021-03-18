@@ -15,6 +15,7 @@ import { CurrencySelectComponent } from './components/courency-select/currency-s
 import { ConsentComponent } from './components/consent/consent.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CallbackComponent } from './components/calllback/callback.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent, PaymentComponent, ContainerComponent, CountrySelectComponent,
@@ -25,6 +26,7 @@ import { CallbackComponent } from './components/calllback/callback.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     MatCardModule,
     MatButtonModule,

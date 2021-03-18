@@ -23,4 +23,8 @@ export class ConsentComponent implements OnInit{
     this.paymentService.flushData();
     this.buttonClicked.emit('cancel');
   }
+
+  submitButton() {
+    this.paymentService.createQueryParams();
+  }
 }
