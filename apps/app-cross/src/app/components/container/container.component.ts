@@ -11,7 +11,7 @@ export class ContainerComponent {
   constructor() {
   }
 
-  title = 'BB bistro Rapid Pay';
+  title = 'BB Bistro Rapid Pay';
 
   setConsentView() {
     this.isConsent = true;
