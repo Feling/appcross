@@ -14,11 +14,13 @@ import { CountrySelectComponent } from './components/country-select/country-sele
 import { CurrencySelectComponent } from './components/courency-select/currency-select.component';
 import { ConsentComponent } from './components/consent/consent.component';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { CallbackComponent } from './components/calllback/callback.component';
 
 @NgModule({
   declarations: [AppComponent, PaymentComponent, ContainerComponent, CountrySelectComponent,
     CurrencySelectComponent,
-    ConsentComponent
+    ConsentComponent,
+    CallbackComponent
   ],
   imports: [
     BrowserModule,
