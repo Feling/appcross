@@ -17,6 +17,7 @@
 </div>
   <div class='consent-select' *ngIf='isConsent'>
     <app-consent
+      (buttonClicked)='onButtonConsentClicked($event)'
     ></app-consent>
   </div>
 

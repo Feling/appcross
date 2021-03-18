@@ -169,4 +169,8 @@ export class PaymentService {
       USD: (Number(BankRates[this.paymentObj.bank]) * Number(this.paymentObj.amount)).toString()
     }
   }
+
+  flushData() {
+    this.paymentJson = {};
+  }
 }

@@ -8,7 +8,7 @@ import { PaymentSaltEdgeObj, PaymentService } from '../../services/payment.servi
   styleUrls: ['./consent.component.scss']
 })
 export class ConsentComponent implements OnInit{
-  @Output() buttonClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() buttonClicked: EventEmitter<any> = new EventEmitter<any>();
   paymentData: PaymentSaltEdgeObj;
 
   constructor(private paymentService: PaymentService) {
@@ -17,5 +17,10 @@ export class ConsentComponent implements OnInit{
 
   ngOnInit(): void {
     this.paymentData = this.paymentService.getPaymentData();
+  }
+
+  cancelButton() {
+    this.paymentService.flushData();
+    this.buttonClicked.emit('cancel');
   }
 }

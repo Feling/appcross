@@ -1,7 +1,12 @@
+<header class='flex'>
+  <img
+    alt='Nx logo'
+    width='75'
+    src='https://nx.dev/assets/images/nx-logo-white.svg'
+  />
+  <h1>{{ title }}!</h1>
+</header>
 <div class='container'>
-  <div class='main-text'>
-    {{responseFromServer.message}}
-  </div>
   <div class='position-succsess'>
     <div class='success-checkmark'>
       <div class='check-icon'>
@@ -11,6 +16,9 @@
         <div class='icon-fix'></div>
       </div>
     </div>
+  </div>
+  <div class='main-text'>
+    {{message}}
   </div>
 </div>
 

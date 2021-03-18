@@ -16,4 +16,13 @@ export class ContainerComponent {
   setConsentView() {
     this.isConsent = true;
   }
+
+  onButtonConsentClicked(event) {
+    if (event === 'cancel') {
+      this.isConsent = false;
+    }
+    if (event ===  'submit') {
+
+    }
+  }
 }
