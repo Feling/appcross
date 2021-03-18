@@ -1,0 +1,52 @@
+<div class='container'>
+  <div class='title'>Consent</div>
+  <div class='main'>
+    <h3> Almost done</h3>
+    <h3>We will need you to pay now from your bank. We will need you to provide a consent to SaltEdge Pay application.
+      These are the details that we will share with Salt Edge Pay:</h3>
+  </div>
+  <div class='payment-data'>
+    <mat-grid-list cols='2' rowHeight='20px'>
+      <mat-grid-tile
+        [colspan]='1'
+        [rowspan]='1'
+      >Payee
+      </mat-grid-tile>
+      <mat-grid-tile
+        [colspan]='1'
+        [rowspan]='1'
+      >{{paymentData.creditorAccount.bic}}</mat-grid-tile>
+      <mat-grid-tile
+        [colspan]='1'
+        [rowspan]='1'
+      >IBAN
+      </mat-grid-tile>
+      <mat-grid-tile
+        [colspan]='1'
+        [rowspan]='1'
+      >{{paymentData.creditorAccount.iban}}</mat-grid-tile>
+      <mat-grid-tile
+        [colspan]='1'
+        [rowspan]='1'
+      >Reference
+      </mat-grid-tile>
+      <mat-grid-tile
+        [colspan]='1'
+        [rowspan]='1'
+      >{{paymentData.creditorAccount.bic}}</mat-grid-tile>
+      <mat-grid-tile
+        [colspan]='1'
+        [rowspan]='1'
+      >Amount
+      </mat-grid-tile>
+      <mat-grid-tile
+        [colspan]='1'
+        [rowspan]='1'
+      >{{paymentData.instructedAmount.amount}}</mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  <div class='buttons'>
+    <button mat-stroked-button color='primary' class='custom-button'>Cancel</button>
+    <button mat-stroked-button color='primary' class='custom-button'>Confirm</button>
+  </div>
+</div>

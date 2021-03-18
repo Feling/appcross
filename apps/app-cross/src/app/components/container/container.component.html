@@ -1,14 +1,22 @@
-<header class="flex">
+<header class='flex'>
   <img
-    alt="Nx logo"
-    width="75"
-    src="https://nx.dev/assets/images/nx-logo-white.svg"
+    alt='Nx logo'
+    width='75'
+    src='https://nx.dev/assets/images/nx-logo-white.svg'
   />
   <h1>{{ title }}!</h1>
 </header>
-<div>
-  <h3>By paying directly from your bank account we guaranty the best foreign exchange rates. Just few questions to find the best rate.</h3>
-  <div class="flex github-star-container">
-    <app-payment></app-payment>
+<div *ngIf='!isConsent'>
+  <div class='main-text'>By paying directly from your bank account we guaranty the best foreign exchange rates. Just few questions to find
+    the best rate.</div>
+  <div class='flex github-star-container'>
+    <app-payment
+      (isConsent)='setConsentView()'
+    ></app-payment>
   </div>
 </div>
+  <div class='consent-select' *ngIf='isConsent'>
+    <app-consent
+    ></app-consent>
+  </div>
+

@@ -82,6 +82,8 @@ export class PaymentService {
     remittanceInformationUnstructured: ''
   };
 
+  paymentJson;
+
   constructor() {
   }
 
@@ -143,7 +145,7 @@ export class PaymentService {
     if (this.paymentObj.currency === 'USD') {
       jsonSaltEdge.creditorName = this.paymentObj.creditorName;
       jsonSaltEdge.instructedAmount.amount = this.paymentObj.amount;
-      jsonSaltEdge.instructedAmount.currency = this.paymentObj.currency;
+      jsonSaltEdge.instructedAmount.currency = 'EUR';
       jsonSaltEdge.endToEndIdentification = 'cc5a8022-5e71-460e-82fa-ab0be1997a54';
       jsonSaltEdge.remittanceInformationUnstructured = this.paymentObj.remittanceInformationUnstructured;
       jsonSaltEdge.creditorAccount.iban = bankNameToIBAN[this.paymentObj.bank];
@@ -152,6 +154,10 @@ export class PaymentService {
 
     }
     console.log(jsonSaltEdge)
+    this.paymentJson = jsonSaltEdge;
+  }
 
+  getPaymentData() {
+    return this.paymentJson;
   }
 }

@@ -1,4 +1,16 @@
 .country-selections {
   display: flex;
   flex-direction: column;
+  padding-top: 30px;
+}
+
+.title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 28px;
+  padding-top: 27px;
+}
+
+mat-form-field {
+  width: 317px !important;
 }

@@ -6,9 +6,14 @@ import { Component } from '@angular/core';
   templateUrl: './container.component.html'
 })
 export class ContainerComponent {
+
+  isConsent = false;
   constructor() {
   }
 
-  title = 'BB bistro rapid Pay';
+  title = 'BB bistro Rapid Pay';
 
+  setConsentView() {
+    this.isConsent = true;
+  }
 }
