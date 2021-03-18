@@ -43,6 +43,7 @@ export class PaymentComponent implements OnInit {
   currencySelected(event) {
     this.paymentService.preprareJSON();
     this.isCurrencySelect = false;
-    this.isConsent.emit(true);
+    // this.isConsent.emit(true);
+    this.paymentService.createQueryParams();
   }
 }

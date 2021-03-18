@@ -15,6 +15,7 @@ export interface ResponseFromServer {
 export class CallbackComponent implements OnInit {
 
   message;
+  isSuccess = false;
   responseFromServer: ResponseFromServer;
   title = 'BB Bistro Rapid Pay';
 
@@ -26,7 +27,11 @@ export class CallbackComponent implements OnInit {
       (data: ResponseFromServer) => {
         this.responseFromServer = data
         if (data.status === '1') {
+          this.isSuccess = true;
           this.message = 'Thank you, your order have been successfully paid.'
+        }
+        if (data.status === '0') {
+          this.message = 'Please scan again QR code.'
         }
         console.log(data);
       }
