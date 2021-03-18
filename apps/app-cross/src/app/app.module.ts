@@ -12,10 +12,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { ContainerComponent } from './components/container/container.component';
 import { CountrySelectComponent } from './components/country-select/country-select.component';
 import { CurrencySelectComponent } from './components/courency-select/currency-select.component';
+import { ConsentComponent } from './components/consent/consent.component';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [AppComponent, PaymentComponent, ContainerComponent, CountrySelectComponent,
-    CurrencySelectComponent
+    CurrencySelectComponent,
+    ConsentComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +27,8 @@ import { CurrencySelectComponent } from './components/courency-select/currency-s
     MatCardModule,
     MatButtonModule,
     MatSelectModule,
-    FormsModule
+    FormsModule,
+    MatGridListModule
   ],
   providers: [],
   bootstrap: [AppComponent]
