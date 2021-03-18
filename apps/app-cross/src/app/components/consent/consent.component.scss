@@ -1,10 +1,28 @@
 .buttons {
   display: flex;
   justify-content: space-around;
+  padding-top: 34px;
 }
 
 
 .custom-button {
   width: 170px!important;
   min-width: unset!important;
+  height: 58px!important;
+}
+
+.title {
+  padding-top: 27px;
+  font-size: 33px;
+  padding-left: 10px;
+}
+
+.main {
+  padding-top: 26px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.payment-data {
+
 }
